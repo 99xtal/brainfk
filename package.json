@@ -1,0 +1,17 @@
+{
+  "name": "bf",
+  "version": "1.0.0",
+  "description": "A brainf**k interpreter",
+  "main": "dist/index.js",
+  "bin": "dist/bf.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joe Rybarczyk",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.11.19",
+    "typescript": "^5.3.3"
+  }
+}
