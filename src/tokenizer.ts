@@ -21,7 +21,7 @@ export class Token {
     }
 }
 
-export class Scanner {
+export class Tokenizer {
     source: string;
     tokens: Token[] = [];
     start: number = 0;
