@@ -1,6 +1,8 @@
 enum TokenType {
-    MOVE,
+    MOVE_FW,
+    MOVE_BACK,
     INCREMENT,
+    DECREMENT,
     OUTPUT,
     INPUT,
     OPEN_BRACE,
@@ -10,14 +12,12 @@ enum TokenType {
 class Token {
     type: TokenType;
     text: string;
-    literal?: string | number;
     line: number;
 
-    constructor(type: TokenType, text: string, line: number, literal?: string | number) {
+    constructor(type: TokenType, text: string, line: number) {
         this.type = type;
         this.line = line;
         this.text = text;
-        this.literal = literal;
     }
 }
 
@@ -45,12 +45,16 @@ class Scanner {
         const char = this.advance();
         switch(char) {
             case '>':
-            case '<':
-                this.moveLiteral();
+                this.addToken(TokenType.MOVE_FW);
                 break;
-            case '+': 
+            case '<':
+                this.addToken(TokenType.MOVE_BACK);
+                break;
+            case '+':
+                this.addToken(TokenType.INCREMENT);
+                break;
             case '-':
-                this.incrementLiteral();
+                this.addToken(TokenType.DECREMENT);
                 break;
             case '.': 
                 this.addToken(TokenType.OUTPUT);
@@ -71,50 +75,10 @@ class Scanner {
         }
     }
 
-    addToken(type: TokenType, literal?: string | number) {
+    addToken(type: TokenType) {
         const text = this.source.slice(this.start, this.current);
-        const token = new Token(type, text, this.line, literal);
+        const token = new Token(type, text, this.line);
         this.tokens.push(token);
-    }
-
-    moveLiteral() {
-        while ("<>\n".includes(this.peek()) && !this.isAtEnd()) {
-            if (this.peek() === '\n') {
-                this.line++;
-            }
-            this.advance();
-        }
-
-        const text = this.source.slice(this.start, this.current);
-        let value = 0;
-        for (const char of text) {
-            if (char === '>') {
-                value++;
-            } else {
-                value--;
-            }
-        }
-
-        this.addToken(TokenType.MOVE, value);
-    }
-
-    incrementLiteral() {
-        while ("+-\n".includes(this.peek()) && !this.isAtEnd()) {
-            if (this.peek() === '\n') this.line++;
-            this.advance();
-        }
-
-        const text = this.source.slice(this.start, this.current);
-        let value = 0;
-        for (const char of text) {
-            if (char === '+') {
-                value++;
-            } else {
-                value--;
-            }
-        }
-
-        this.addToken(TokenType.INCREMENT, value);
     }
 
     isAtEnd() {
