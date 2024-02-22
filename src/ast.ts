@@ -30,11 +30,11 @@ export class LoopStmt extends Statement {
 }
 
 export class CmdStmt extends Statement {
-    operator: Operation;
+    operation: Operation;
 
-    constructor(command: Operation) {
+    constructor(operation: Operation) {
         super();
-        this.operator = command;
+        this.operation = operation;
     }
 
     accept<T>(visitor: Visitor<T>): T {

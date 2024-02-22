@@ -14,7 +14,8 @@ const filePath = argv[1];
 try {
     const buf = fs.readFileSync(filePath);
     const source = buf.toString();
-    const bf = new Brainfuck(source);
+    const bf = new Brainfuck();
+    bf.run(source);
 } catch (err) {
     console.error('Failed to read file', err);
 }
