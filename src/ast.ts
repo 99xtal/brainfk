@@ -1,6 +1,15 @@
-interface Visitor<T> {
+export interface Visitor<T> {
     visitLoopStatement(stmt: LoopStmt): T
     visitCmdStatement(stmt: CmdStmt): T
+}
+
+export enum Operation {
+    MOVE_RIGHT,
+    MOVE_LEFT,
+    INCR,
+    DECR,
+    OUT,
+    IN
 }
 
 export abstract class Statement {
@@ -20,38 +29,15 @@ export class LoopStmt extends Statement {
     }
 }
 
-export enum Operator {
-    MOVE_RIGHT = ">",
-    MOVE_LEFT = "<",
-    INCR = "+",
-    DECR = "-",
-    OUT = ".",
-    IN = ","
-}
-
 export class CmdStmt extends Statement {
-    operator: Operator;
+    operator: Operation;
 
-    constructor(command: Operator) {
+    constructor(command: Operation) {
         super();
         this.operator = command;
     }
 
     accept<T>(visitor: Visitor<T>): T {
         return visitor.visitCmdStatement(this);
-    }
-}
-
-export class AstPrinter implements Visitor<string> {
-    print(stmt: Statement) {
-        return stmt.accept(this);
-    }
-
-    visitCmdStatement(stmt: CmdStmt): string {
-        return stmt.operator;
-    }
-
-    visitLoopStatement(stmt: LoopStmt): string {
-        return "\n[\n\t" + stmt.body.map((s) => `${s.accept(this)}`) + "\n]\n"
     }
 }
