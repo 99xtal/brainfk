@@ -1,0 +1,7 @@
+program     ->  statement* EOF;
+
+statement       ->  command_stmt | loop_stmt;
+
+loop_stmt       ->  "[" statement* "]"
+
+command_stmt    ->  (">" | "<" | "+" | "-" | "." | ",")
