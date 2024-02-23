@@ -1,15 +1,9 @@
 export interface Visitor<T> {
     visitLoopStatement(stmt: LoopStmt): T
-    visitCmdStatement(stmt: CmdStmt): T
-}
-
-export enum Operation {
-    MOVE_RIGHT,
-    MOVE_LEFT,
-    INCR,
-    DECR,
-    OUT,
-    IN
+    visitMoveStatement(stmt: MoveStmt): T
+    visitIncrStatement(stmt: IncrStmt): T
+    visitOutputStatement(stmt: OutputStmt): T
+    visitInputStatement(stmt: InputStmt): T
 }
 
 export abstract class Statement {
@@ -29,15 +23,40 @@ export class LoopStmt extends Statement {
     }
 }
 
-export class CmdStmt extends Statement {
-    operation: Operation;
+export class MoveStmt extends Statement {
+    value: number;
 
-    constructor(operation: Operation) {
+    constructor(value: number) {
         super();
-        this.operation = operation;
+        this.value = value;
     }
 
     accept<T>(visitor: Visitor<T>): T {
-        return visitor.visitCmdStatement(this);
+        return visitor.visitMoveStatement(this);
+    }
+}
+
+export class IncrStmt extends Statement {
+    value: number;
+
+    constructor(value: number) {
+        super();
+        this.value = value;
+    }
+
+    accept<T>(visitor: Visitor<T>): T {
+        return visitor.visitIncrStatement(this);
+    }
+}
+
+export class OutputStmt extends Statement {
+    accept<T>(visitor: Visitor<T>): T {
+        return visitor.visitOutputStatement(this);
+    }
+}
+
+export class InputStmt extends Statement {
+    accept<T>(visitor: Visitor<T>): T {
+        return visitor.visitInputStatement(this);
     }
 }

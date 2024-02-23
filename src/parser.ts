@@ -1,4 +1,4 @@
-import { CmdStmt, LoopStmt, Operation, Statement } from "./ast";
+import { IncrStmt, InputStmt, LoopStmt, MoveStmt, OutputStmt, Statement } from "./ast";
 import { Token, TokenType } from "./tokenizer";
 
 export class Parser {
@@ -27,7 +27,25 @@ export class Parser {
             throw new SyntaxError('Unmatched closing brace');
         }
 
-        return this.cmdStatement();
+        if (this.match(TokenType.INPUT)) {
+            this.consume(TokenType.INPUT);
+            return new InputStmt();
+        }
+
+        if (this.match(TokenType.OUTPUT)) {
+            this.consume(TokenType.OUTPUT);
+            return new OutputStmt();
+        }
+
+        if (this.match(TokenType.INCREMENT, TokenType.DECREMENT)) {
+            return this.incrStatement();
+        }
+
+        if (this.match(TokenType.MOVE_BACK, TokenType.MOVE_FW)) {
+            return this.moveStatement();
+        }
+
+        throw new Error('Unexpected token');
     }
 
     loopStatement(): LoopStmt {
@@ -42,29 +60,30 @@ export class Parser {
         return new LoopStmt(statements);
     }
 
-    cmdStatement(): CmdStmt {
-        switch(this.peek().type) {
-            case TokenType.INCREMENT:
-                this.consume(TokenType.INCREMENT, '')
-                return new CmdStmt(Operation.INCR);
-            case TokenType.DECREMENT:
-                this.consume(TokenType.DECREMENT, '')
-                return new CmdStmt(Operation.DECR);
-            case TokenType.MOVE_FW:
-                this.consume(TokenType.MOVE_FW, '')
-                return new CmdStmt(Operation.MOVE_RIGHT);
-            case TokenType.MOVE_BACK:
-                this.consume(TokenType.MOVE_BACK, '')
-                return new CmdStmt(Operation.MOVE_LEFT);
-            case TokenType.INPUT:
-                this.consume(TokenType.INPUT, '');
-                return new CmdStmt(Operation.IN);
-            case TokenType.OUTPUT:
-                this.consume(TokenType.OUTPUT, '');
-                return new CmdStmt(Operation.OUT);
-            default:
-                throw new SyntaxError('Unexpected token');
+    incrStatement(): IncrStmt {
+        let value = 0;
+        while (this.match(TokenType.INCREMENT, TokenType.DECREMENT)) {
+            if (this.advance().type == TokenType.INCREMENT) {
+                value++;
+            } else {
+                value--;
+            }
         }
+
+        return new IncrStmt(value);
+    }
+
+    moveStatement(): MoveStmt {
+        let value = 0;
+        while (this.match(TokenType.MOVE_BACK, TokenType.MOVE_FW)) {
+            if (this.advance().type == TokenType.MOVE_FW) {
+                value++;
+            } else {
+                value--;
+            }
+        }
+
+        return new MoveStmt(value);
     }
 
     match(...types: TokenType[]) {
@@ -94,7 +113,7 @@ export class Parser {
         return this.current >= this.tokens.length;
     }
 
-    consume(type: TokenType, message: string) {
+    consume(type: TokenType, message?: string) {
         if (this.check(type)) return this.advance();
 
         throw new SyntaxError(this.peek() + ' ' + message);
