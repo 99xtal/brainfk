@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import fs from 'fs';
-import Brainfuck from '.';
+import Brainfuck from '../src';
 
 const [nodePath, ...argv] = process.argv;
 

@@ -1,9 +1,9 @@
 {
-  "name": "bf",
+  "name": "brainfrick",
   "version": "1.0.0",
   "description": "A brainf**k interpreter",
   "main": "dist/index.js",
-  "bin": "dist/bf.js",
+  "bin": "dist/bin/index.js",
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -10,6 +10,14 @@ export abstract class Statement {
     abstract accept<T>(visitor: Visitor<T>): T;
 }
 
+export class Program {
+    body: Statement[];
+
+    constructor(body: Statement[]) {
+        this.body = body;
+    }
+}
+
 export class LoopStmt extends Statement {
     body: Statement[];
 

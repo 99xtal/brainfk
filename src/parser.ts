@@ -1,4 +1,4 @@
-import { IncrStmt, InputStmt, LoopStmt, MoveStmt, OutputStmt, Statement } from "./ast";
+import { IncrStmt, InputStmt, LoopStmt, MoveStmt, OutputStmt, Program, Statement } from "./ast";
 import { Token, TokenType } from "./tokenizer";
 
 export class Parser {
@@ -15,7 +15,7 @@ export class Parser {
             statements.push(this.statement());
         }
 
-        return statements;
+        return new Program(statements);
     }
 
     statement(): Statement {

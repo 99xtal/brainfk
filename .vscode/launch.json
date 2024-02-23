@@ -9,7 +9,8 @@
             "type": "node",
             "request": "launch",
             "args": [
-                "${relativeFile}"
+                "./bin/index.ts",
+                "./examples/helloworld.bf"
             ],
             "runtimeArgs": [
                 "-r",

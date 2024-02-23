@@ -1,4 +1,4 @@
-import { IncrStmt, InputStmt, LoopStmt, MoveStmt, OutputStmt, Statement, Visitor } from "./ast";
+import { IncrStmt, InputStmt, LoopStmt, MoveStmt, OutputStmt, Program, Statement, Visitor } from "./ast";
 
 type InterpreterOptions = {
     memorySize?: number,
@@ -15,8 +15,8 @@ export class Interpreter implements Visitor<void> {
         this.memory = new Array(memorySize).fill(0);
     }
 
-    run(statements: Statement[]) {
-        for (const statement of statements) {
+    run(program: Program) {
+        for (const statement of program.body) {
             statement.accept(this);
         }
     }
