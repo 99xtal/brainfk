@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import fs from 'fs';
 import readline from 'readline';
-import Brainfuck from '../src';
+import Brainfuck from '../lib';
 
 const [_, ...argv] = process.argv;
 
