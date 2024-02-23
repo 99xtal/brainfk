@@ -2,6 +2,14 @@ program     ->  statement* EOF;
 
 statement       ->  command_stmt | loop_stmt;
 
-loop_stmt       ->  "[" statement* "]"
+loop_stmt       ->  "[" statement* "]";
 
-command_stmt    ->  (">" | "<" | "+" | "-" | "." | ",")
+command_stmt    ->  move_stmt
+                | incr_stmt
+                | input_stmt
+                | output_stmt;
+
+move_stmt       ->  (">" | "<")*;
+incr_stmt       ->  ("+" | "-")*;
+input_stmt      ->  ","
+output_stmt     ->  "."
