@@ -18,4 +18,11 @@ export default class Brainfuck {
         const parser = new Parser(tokens);
         return parser.parse();
     }
+
+    state() {
+        return {
+            pos: this.interpreter.dp,
+            memory: this.interpreter.memory,
+        }
+    }
 }
