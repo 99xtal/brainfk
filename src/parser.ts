@@ -87,7 +87,7 @@ export class Parser {
     }
 
     match(...types: TokenType[]) {
-        return types.some((t) => t === this.peek().type)
+        return types.some((t) => t === this.peek()?.type)
     }
 
     check(type: TokenType) {
