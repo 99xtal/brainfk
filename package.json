@@ -1,6 +1,6 @@
 {
   "name": "brainfk",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A brainf**k interpreter",
   "keywords": ["brainfuck"],
   "main": "dist/lib/index.js",
